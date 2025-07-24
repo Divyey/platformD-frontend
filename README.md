@@ -1,2 +1,2 @@
-# swayly-frontend
-swayly-frontend
+# platformD-frontend
+platformD-frontend
