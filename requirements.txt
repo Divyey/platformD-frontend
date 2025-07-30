@@ -1,0 +1,8 @@
+# You'll need React, React Router v6, axios, and optionally React Query + Zustand (recommended):
+npm install react react-dom react-router-dom@6 axios
+
+# Optional but highly recommended (for efficient data fetching & global state):
+npm install @tanstack/react-query zustand
+
+# To also install dev dependencies:
+npm install -D vite @vitejs/plugin-react
