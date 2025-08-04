@@ -1,0 +1,19 @@
+.event-slider {
+    padding: 1rem 0.2rem 1.4rem 0.2rem;
+    background: #f6f8fc;
+    overflow-x: auto;
+  }
+  .event-slider-item {
+    min-width: 320px;
+    max-width: 520px;
+    margin: auto;
+    background: #2563eb;
+    color: #fff;
+    border-radius: 18px;
+    padding: 2rem 2.2rem;
+    font-size: 1.3rem;
+    text-align: center;
+    font-weight: 500;
+    box-shadow: 0 1px 8px rgba(0,0,0,0.07);
+  }
+  

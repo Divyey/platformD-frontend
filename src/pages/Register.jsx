@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { register } from '../api/auth';
 import { useNavigate } from 'react-router-dom';
+import '../styles/Register.css';
 
 export default function Register() {
   const [form, setForm] = useState({
@@ -9,7 +10,7 @@ export default function Register() {
     password: '',
     contact_number: '',
     bio: '',
-    interests: [''],
+    interests: '',
     avatar_url: '',
     locale: 'en',
   });
@@ -17,87 +18,50 @@ export default function Register() {
   const navigate = useNavigate();
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
     setForm(prev => ({
       ...prev,
-      [name]: name === 'interests' ? value.split(',').map(i => i.trim()) : value,
+      [e.target.name]: e.target.value,
     }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Convert interests string to array of trimmed strings
+    const interestsArray = form.interests.split(',').map(i => i.trim()).filter(Boolean);
+
     try {
-      await register(form);
-      alert('Registration successful! Please login.');
+      await register({ ...form, interests: interestsArray });
+      alert('Registration successful! Please log in.');
       navigate('/login');
     } catch (err) {
       alert('Registration failed: ' + (err.response?.data?.detail || err.message));
     }
   };
 
+  const googleLogin = () => {
+    window.location.href = `${import.meta.env.VITE_API_BASE_URL}/auth/google-login`;
+  };
+
   return (
-    <form onSubmit={handleSubmit} style={{ maxWidth: 500, margin: '2rem auto' }}>
-      <h2>Register</h2>
-      <input
-        type="text"
-        name="username"
-        placeholder="Username"
-        value={form.username}
-        onChange={handleChange}
-        required
-        style={{ display: 'block', margin: '10px 0', width: '100%', padding: '8px' }}
-      />
-      <input
-        type="email"
-        name="email"
-        placeholder="Email"
-        value={form.email}
-        onChange={handleChange}
-        required
-        style={{ display: 'block', margin: '10px 0', width: '100%', padding: '8px' }}
-      />
-      <input
-        type="password"
-        name="password"
-        placeholder="Password"
-        value={form.password}
-        onChange={handleChange}
-        required
-        style={{ display: 'block', margin: '10px 0', width: '100%', padding: '8px' }}
-      />
-      <input
-        type="text"
-        name="contact_number"
-        placeholder="Contact Number"
-        value={form.contact_number}
-        onChange={handleChange}
-        style={{ display: 'block', margin: '10px 0', width: '100%', padding: '8px' }}
-      />
-      <input
-        type="text"
-        name="bio"
-        placeholder="Bio"
-        value={form.bio}
-        onChange={handleChange}
-        style={{ display: 'block', margin: '10px 0', width: '100%', padding: '8px' }}
-      />
-      <input
-        type="text"
-        name="interests"
-        placeholder="Interests (comma separated)"
-        value={form.interests}
-        onChange={handleChange}
-        style={{ display: 'block', margin: '10px 0', width: '100%', padding: '8px' }}
-      />
-      <input
-        type="text"
-        name="avatar_url"
-        placeholder="Avatar URL"
-        value={form.avatar_url}
-        onChange={handleChange}
-        style={{ display: 'block', margin: '10px 0', width: '100%', padding: '8px' }}
-      />
-      <button type="submit" style={{ padding: '10px 20px' }}>Register</button>
-    </form>
+    <div className="auth-container">
+      <form onSubmit={handleSubmit} className="auth-form">
+        <h2>Register</h2>
+        <input name="username" placeholder="Username" value={form.username} onChange={handleChange} required className="auth-input" />
+        <input type="email" name="email" placeholder="Email" value={form.email} onChange={handleChange} required className="auth-input" />
+        <input type="password" name="password" placeholder="Password" value={form.password} onChange={handleChange} required className="auth-input" />
+        <input name="contact_number" placeholder="Contact Number" value={form.contact_number} onChange={handleChange} className="auth-input" />
+        <input name="bio" placeholder="Bio" value={form.bio} onChange={handleChange} className="auth-input" />
+        <input name="interests" placeholder="Interests (comma separated)" value={form.interests} onChange={handleChange} className="auth-input" />
+        <input name="avatar_url" placeholder="Avatar URL" value={form.avatar_url} onChange={handleChange} className="auth-input" />
+        <button type="submit" className="auth-button">Register</button>
+      </form>
+
+      <button onClick={googleLogin} className="google-login-button" aria-label="Register with Google">
+        <img src="/google-icon.svg" alt="Google icon" className="google-icon" />
+        Register with Google
+      </button>
+
+    </div>
   );
 }
