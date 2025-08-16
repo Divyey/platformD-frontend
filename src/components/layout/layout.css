@@ -1,35 +1,52 @@
-/* frontend/src/components/layout/layout.css */
-.top-nav,
-.bottom-nav {
+.top-nav, .bottom-nav {
   display: flex;
   align-items: center;
   justify-content: space-between;
   background: #fff;
-  box-shadow: 0 2px 8px rgb(0 0 0 / 0.1);
-  padding: 0.5rem 1rem;
-  backdrop-filter: saturate(180%) blur(12px);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+  padding: 0.7rem 1.2rem;
   position: sticky;
   z-index: 100;
-  user-select: none;
 }
 
-.top-nav {
-  top: 0;
-  border-bottom: 1px solid #eee;
-}
+.top-nav { top: 0; border-bottom: 1px solid #eee; }
 
 .bottom-nav {
   bottom: 0;
-  border-top: 1px solid #eee;
+  left: 0; right: 0;
   position: fixed;
-  width: 100%;
+  width: 100vw;
   max-width: 600px;
-  margin: 0 auto;
-  left: 0;
-  right: 0;
+  margin: 0 auto; /* center on desktop */
   justify-content: space-around;
   background: linear-gradient(135deg, #7b2ff7, #f107a3, #f7b733);
   color: white;
+  border-top: 1px solid #eee;
+}
+
+.bottom-nav-link {
+  font-size: 1.65rem;
+  padding: 0.24rem;
+  color: #ddd;
+  transition: color 0.2s;
+  border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
+  margin: 0 4px;
+}
+.bottom-nav-link.active,
+.bottom-nav-link:hover {
+  color: #f7b733;
+  background: #fff1;
+}
+
+@media (max-width: 600px) {
+  .top-nav, .bottom-nav {
+    padding: 0.5rem 0.7rem;
+  }
+  .bottom-nav {
+    font-size: 1.2rem;
+  }
 }
 
 .icon-btn {

@@ -38,7 +38,7 @@ const posts = [
 export default function Home() {
   return (
     <div className="home-page">
-      <TopNav />
+      {/* <TopNav /> */}
       <main className="feed-container" role="main" aria-label="Social media feed">
         {posts.map((post) => (
           <SocialPostCard key={post.id} post={post} />

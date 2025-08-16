@@ -2,7 +2,8 @@
 // frontend/src/components/SocialPostCard.jsx
 import React from "react";
 import { FiHeart, FiMessageCircle } from "react-icons/fi";
-import "./SocialPostCard.css";
+// import "./SocialPostCard.css";
+import "../pages/Home.css"; // Assuming styles are in Home.css
 
 export default function SocialPostCard({ post }) {
   return (
