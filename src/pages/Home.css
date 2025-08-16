@@ -1,9 +1,26 @@
-.home-root {
-    background: #f6f8fc;
+/* frontend/src/pages/Home.css */
+.home-page {
+    display: flex;
+    flex-direction: column;
     min-height: 100vh;
+    background: linear-gradient(135deg, #7b2ff7, #f107a3, #f7b733);
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    color: #333;
   }
-  .home-featured {
-    margin: 2rem auto;
-    max-width: 700px;
+  .feed-container {
+    flex: 1;
+    max-width: 600px;
+    margin: 1rem auto 5rem auto; /* leave space for bottom nav */
+    padding: 0 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    outline-offset: -4px;
+  }
+  @media (max-width: 640px) {
+    .feed-container {
+      max-width: 100%;
+      margin: 1rem 0 5rem 0;
+    }
   }
   

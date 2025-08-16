@@ -1,67 +1,167 @@
-import React, { useState } from 'react';
-import { register } from '../api/auth';
-import { useNavigate } from 'react-router-dom';
-import '../styles/Register.css';
-
+import { useState } from "react";
+import { registerUser } from "../api/auth";
+import { Link, useNavigate } from "react-router-dom";
+import { message } from "antd"; // Only for feedback popup
+import googleLogo from "../assets/google.png";
+import { useAuth } from "../contexts/AuthContext";
+import "../styles/global.css"; // Assuming you have global styles
 export default function Register() {
-  const [form, setForm] = useState({
-    username: '',
-    email: '',
-    password: '',
-    contact_number: '',
-    bio: '',
-    interests: '',
-    avatar_url: '',
-    locale: 'en',
-  });
-
+  const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
 
+  const [form, setForm] = useState({
+    username: "",
+    email: "",
+    contact_number: "",
+    bio: "",
+    interests: [""],
+    avatar_url: "",
+    locale: "en",
+    password: ""
+  });
+
+  const handleInterestChange = (i, value) => {
+    const interests = [...form.interests];
+    interests[i] = value;
+    setForm({ ...form, interests });
+  };
+
+  const addInterest = () => setForm({ ...form, interests: [...form.interests, ""] });
+
+  const removeInterest = (i) => {
+    const interests = form.interests.filter((_, idx) => idx !== i);
+    setForm({ ...form, interests });
+  };
+
   const handleChange = (e) => {
-    setForm(prev => ({
-      ...prev,
-      [e.target.name]: e.target.value,
-    }));
+    setForm({ ...form, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    // Convert interests string to array of trimmed strings
-    const interestsArray = form.interests.split(',').map(i => i.trim()).filter(Boolean);
-
+    const payload = {
+      ...form,
+      interests: form.interests.filter((interest) => interest.trim() !== "")
+    };
     try {
-      await register({ ...form, interests: interestsArray });
-      alert('Registration successful! Please log in.');
-      navigate('/login');
+      await registerUser(payload);
+      message.success("User registered! Please login.");
+      navigate("/login");
     } catch (err) {
-      alert('Registration failed: ' + (err.response?.data?.detail || err.message));
+      message.error(err.response?.data?.detail || "Registration failed!");
     }
   };
 
-  const googleLogin = () => {
-    window.location.href = `${import.meta.env.VITE_API_BASE_URL}/auth/google-login`;
-  };
+  if (isAuthenticated) {
+    navigate("/");
+    return null;
+  }
 
   return (
     <div className="auth-container">
-      <form onSubmit={handleSubmit} className="auth-form">
-        <h2>Register</h2>
-        <input name="username" placeholder="Username" value={form.username} onChange={handleChange} required className="auth-input" />
-        <input type="email" name="email" placeholder="Email" value={form.email} onChange={handleChange} required className="auth-input" />
-        <input type="password" name="password" placeholder="Password" value={form.password} onChange={handleChange} required className="auth-input" />
-        <input name="contact_number" placeholder="Contact Number" value={form.contact_number} onChange={handleChange} className="auth-input" />
-        <input name="bio" placeholder="Bio" value={form.bio} onChange={handleChange} className="auth-input" />
-        <input name="interests" placeholder="Interests (comma separated)" value={form.interests} onChange={handleChange} className="auth-input" />
-        <input name="avatar_url" placeholder="Avatar URL" value={form.avatar_url} onChange={handleChange} className="auth-input" />
-        <button type="submit" className="auth-button">Register</button>
+      <h2>Create Account</h2>
+      <form onSubmit={handleSubmit}>
+        <input
+          name="username"
+          placeholder="Username"
+          value={form.username}
+          onChange={handleChange}
+          required
+        />
+        <input
+          name="email"
+          type="email"
+          placeholder="Email"
+          value={form.email}
+          onChange={handleChange}
+          required
+        />
+        <input
+          name="contact_number"
+          placeholder="Contact Number"
+          value={form.contact_number}
+          onChange={handleChange}
+        />
+        <input
+          name="bio"
+          placeholder="Bio"
+          value={form.bio}
+          onChange={handleChange}
+        />
+
+        <label style={{ marginTop: "1em", display: "block" }}>Interests:</label>
+        {form.interests.map((interest, i) => (
+        <div key={i} className="interests-row">
+            <input
+            value={interest}
+            onChange={e => handleInterestChange(i, e.target.value)}
+            placeholder={`Interest ${i + 1}`}
+            name={`interest-${i}`}
+            className="interest-input"
+            />
+            <button
+            type="button"
+            onClick={() => removeInterest(i)}
+            disabled={form.interests.length === 1}
+            className="remove-btn"
+            aria-label="Remove interest"
+            title="Remove"
+            >
+            &times;
+            </button>
+        </div>
+        ))}
+        <button
+        type="button"
+        onClick={addInterest}
+        style={{
+            marginBottom: "8px",
+            background: "linear-gradient(90deg, #7b2ff7, #f107a3, #f7b733)",
+            color: "#fff",
+            border: "none",
+            padding: "0.5rem 1rem",
+            borderRadius: "18px",
+            fontSize: "1rem",
+            cursor: "pointer"
+        }}
+        >
+        + Add Interest
+        </button>
+
+
+        <input
+          name="avatar_url"
+          placeholder="Avatar URL"
+          value={form.avatar_url}
+          onChange={handleChange}
+        />
+        <input
+          name="locale"
+          placeholder="Locale (default: en)"
+          value={form.locale}
+          onChange={handleChange}
+        />
+        <input
+          type="password"
+          name="password"
+          placeholder="Password"
+          value={form.password}
+          onChange={handleChange}
+          required
+        />
+
+        <button type="submit">Register</button>
       </form>
-
-      <button onClick={googleLogin} className="google-login-button" aria-label="Register with Google">
-        <img src="/google-icon.svg" alt="Google icon" className="google-icon" />
-        Register with Google
-      </button>
-
+      <a
+        href="https://platformd-backend.onrender.com/api/v1/auth/google-login"
+        className="google-login-btn"
+      >
+        <img src={googleLogo} className="google-icon" alt="Google" />
+        Sign up with Google
+      </a>
+      <p>
+        Already have an account? <Link to="/login">Login here</Link>
+      </p>
     </div>
   );
 }

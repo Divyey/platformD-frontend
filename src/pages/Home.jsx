@@ -1,41 +1,50 @@
+// frontend/src/pages/Home.jsx
 import React from "react";
+import TopNav from "../components/layout/TopNav";
+import BottomNav from "../components/layout/BottomNav";
+import SocialPostCard from "../components/SocialPostCard";
 import "./Home.css";
-import PageToolbar from "../components/PageToolbar/PageToolbar";
-import Stories from "../components/Stories/Stories";
-import EventSlider from "../components/EventSlider/EventSlider";
-import EventCard from "../components/EventCard/EventCard";
+
+const posts = [
+  {
+    id: 1,
+    user: {
+      name: "Jane Doe",
+      avatar: "https://i.pravatar.cc/100?img=15",
+      username: "@janedoe",
+    },
+    content: "Exploring new creative designs! #designerlife",
+    image:
+      "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80",
+    likes: 123,
+    comments: 14,
+  },
+
+  {
+    id: 2,
+    user: {
+      name: "John Roe",
+      avatar: "https://i.pravatar.cc/100?img=20",
+      username: "@johnroe",
+    },
+    content: "Sunsets & good vibes ☀️🌅 #weekendmood",
+    image:
+      "https://images.unsplash.com/photo-1465101162946-4377e57745c3?auto=format&fit=crop&w=800&q=80",
+    likes: 58,
+    comments: 6,
+  },
+];
 
 export default function Home() {
-  // Sample event data — replace with API events soon!
-  const featuredEvent = {
-    image:
-      "https://images.unsplash.com/photo-1424746219973-8fe3bd07d8e3?fit=crop&w=600&q=80",
-    name: "Startup Mixers Night",
-    description: "Network with founders in a casual setting!",
-    location: "The Hive, Bangalore",
-    organiser: "TechCrossroads",
-    date: "2025-08-22",
-    time: "18:30",
-  };
-
   return (
-    <div className="home-root">
-      {/* Toolbar: Search, Filter, Map, Trending */}
-      <PageToolbar />
-
-      {/* Stories bar */}
-      <Stories />
-
-      {/* Highlight Events Slider */}
-      <EventSlider />
-
-      {/* Featured Event (big card) */}
-      <div className="home-featured">
-        <EventCard event={featuredEvent} featured />
-      </div>
-
-      {/* Can map multiple event cards in grid below if needed */}
-      {/* ... */}
+    <div className="home-page">
+      <TopNav />
+      <main className="feed-container" role="main" aria-label="Social media feed">
+        {posts.map((post) => (
+          <SocialPostCard key={post.id} post={post} />
+        ))}
+      </main>
+      <BottomNav />
     </div>
   );
 }

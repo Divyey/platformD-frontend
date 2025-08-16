@@ -1,6 +1,9 @@
-import React from "react";
-import ChatLayout from "../components/Chat/ChatLayout";
-
 export default function Messages() {
-  return <ChatLayout />;
-}
+    return (
+      <div style={{ padding: "1rem" }}>
+        <h2>Messages</h2>
+        <p>Here’s where your messages will appear.</p>
+      </div>
+    );
+  }
+  
