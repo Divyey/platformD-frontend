@@ -10,7 +10,6 @@ export const loginUser = async (email, password) => {
   const res = await axios.post(`${API_BASE_URL}/auth/token`, params, {
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
   });
-
   return res.data;
 };
 

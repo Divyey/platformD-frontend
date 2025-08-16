@@ -15,8 +15,8 @@
   bottom: 0;
   left: 0; right: 0;
   position: fixed;
-  width: 100vw;
-  max-width: 600px;
+  width: 100%;
+  max-width: 100%;
   margin: 0 auto; /* center on desktop */
   justify-content: space-around;
   background: linear-gradient(135deg, #7b2ff7, #f107a3, #f7b733);
